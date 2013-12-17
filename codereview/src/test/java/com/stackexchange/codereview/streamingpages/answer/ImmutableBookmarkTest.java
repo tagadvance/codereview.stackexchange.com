@@ -2,8 +2,6 @@ package com.stackexchange.codereview.streamingpages.answer;
 
 import org.junit.Test;
 
-import com.stackexchange.codereview.streamingpages.answer.ImmutableBookmark;
-
 public class ImmutableBookmarkTest {
 
 	private final int passingPage = 0, passingPosition = 0, failingPage = -1,
