@@ -5,9 +5,6 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.stackexchange.codereview.streamingpages.answer.Book;
-import com.stackexchange.codereview.streamingpages.answer.ArrayBook;
-
 public class ArrayBookTest {
 
 	private String[][] data;
