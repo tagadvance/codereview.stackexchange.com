@@ -25,17 +25,20 @@ public class ReboundBook<E> implements Book<E> {
 	public int getPageCount() {
 		int pageCount = book.getPageCount();
 		int pageSize = book.getPageSize();
-		BigDecimal total = BigDecimal.valueOf(pageCount * pageSize);
+		int product = pageCount * pageSize;
+		product -= (pageSize - book.getPage(pageCount - 1).size()); // FIXME: this feels dirty TODO: support pages of varying size
+		BigDecimal total = BigDecimal.valueOf(product);
 		BigDecimal divisor = BigDecimal.valueOf(newPageSize);
-		total.divide(divisor, RoundingMode.CEILING);
-		return total.intValue();
+		BigDecimal totalPageCount = total.divide(divisor, RoundingMode.CEILING);
+		return totalPageCount.intValue();
 	}
 
 	@Override
 	public List<E> getPage(int pageNumber) {
 		Bookmark bookmark = new ImmutableBookmark(pageNumber);
 		Bookmark oldBookmark = index.lookupOldLocation(bookmark);
-		try (BookReader<E> bookReader = new DefaultBookReader<>(this.book, oldBookmark);) {
+		try (BookReader<E> bookReader = new DefaultBookReader<>(this.book,
+				oldBookmark);) {
 			return bookReader.read(this.newPageSize);
 		} catch (IOException e) {
 			// as this is an example I don't really care

@@ -6,19 +6,16 @@ import java.util.NoSuchElementException;
 
 import com.google.common.base.Preconditions;
 
-public class ReboundBookIterator<E> implements Iterator<List<E>> {
+public class BookIterator<E> implements Iterator<List<E>> {
 
 	private final Book<E> book;
 	private final BookReader<E> bookReader;
-	private final int newPageSize;
 	private int pagesRead;
 
-	public ReboundBookIterator(final Book<E> book, final int newPageSize) {
+	public BookIterator(final Book<E> book) {
 		super();
 		this.book = Preconditions.checkNotNull(book, "book must not be null");
 		this.bookReader = new DefaultBookReader<>(book);
-		Preconditions.checkArgument(newPageSize >= 1, "newPageSize < 1");
-		this.newPageSize = newPageSize;
 	}
 
 	@Override
@@ -28,11 +25,11 @@ public class ReboundBookIterator<E> implements Iterator<List<E>> {
 
 	@Override
 	public List<E> next() {
-		List<E> next = bookReader.read(newPageSize);
+		List<E> next = bookReader.read(book.getPageSize());
 		if (next.isEmpty()) {
 			throw new NoSuchElementException();
 		}
-		this.pagesRead += next.size();
+		this.pagesRead++;
 		return next;
 	}
 

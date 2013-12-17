@@ -35,7 +35,7 @@ public class ArrayBook<E> implements Book<E> {
 		 * here we assume all pages are of the exact same size (except the last
 		 * one) TODO: write precondition/unit test to prove it
 		 */
-		return getPage(0).size();
+		return data[0].length;
 	}
 
 }

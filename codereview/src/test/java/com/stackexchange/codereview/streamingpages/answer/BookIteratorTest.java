@@ -20,7 +20,7 @@ import com.google.common.base.Joiner;
  * @see <a href="http://stackoverflow.com/a/14920413/625688">How to JUnit test a
  *      iterator</a>
  */
-public class ReboundBookIteratorTest {
+public class BookIteratorTest {
 
 	@Mock
 	private Book<String> book;
@@ -39,8 +39,7 @@ public class ReboundBookIteratorTest {
 		Mockito.when(book.getPage(pageNumber)).thenThrow(
 				new IndexOutOfBoundsException());
 
-		int newPageSize = 1;
-		Iterator<List<String>> i = new ReboundBookIterator<>(book, newPageSize);
+		Iterator<List<String>> i = new BookIterator<>(book);
 		boolean expected = false;
 		Assert.assertEquals(expected, i.hasNext());
 	}
@@ -52,10 +51,9 @@ public class ReboundBookIteratorTest {
 		Mockito.when(book.getPageSize()).thenReturn(0);
 		final int pageNumber = 0;
 		Mockito.when(book.getPage(pageNumber)).thenThrow(
-				new IndexOutOfBoundsException());
+				new NoSuchElementException());
 
-		int newPageSize = 1;
-		Iterator<List<String>> i = new ReboundBookIterator<>(book, newPageSize);
+		Iterator<List<String>> i = new BookIterator<>(book);
 		i.next();
 	}
 
@@ -68,8 +66,7 @@ public class ReboundBookIteratorTest {
 		Mockito.when(book.getPage(pageNumber)).thenReturn(
 				Arrays.asList(new String[] { "one" }));
 
-		int newPageSize = 1;
-		Iterator<List<String>> i = new ReboundBookIterator<>(book, newPageSize);
+		Iterator<List<String>> i = new BookIterator<>(book);
 		boolean expected = true;
 		int arbitraryInt = 2;
 		for (int j = 0; j < arbitraryInt; j++) {
@@ -86,8 +83,7 @@ public class ReboundBookIteratorTest {
 		Mockito.when(book.getPage(pageNumber)).thenReturn(
 				Arrays.asList(new String[] { "one" }));
 
-		int newPageSize = 1;
-		Iterator<List<String>> i = new ReboundBookIterator<>(book, newPageSize);
+		Iterator<List<String>> i = new BookIterator<>(book);
 		{
 			boolean expected = true;
 			Assert.assertEquals(expected, i.hasNext());
@@ -117,8 +113,7 @@ public class ReboundBookIteratorTest {
 		Mockito.when(book.getPage(pageNumber)).thenThrow(
 				new IndexOutOfBoundsException());
 
-		int newPageSize = 1;
-		Iterator<List<String>> i = new ReboundBookIterator<>(book, newPageSize);
+		Iterator<List<String>> i = new BookIterator<>(book);
 		i.remove();
 	}
 
@@ -133,32 +128,29 @@ public class ReboundBookIteratorTest {
 				Arrays.asList(new String[] { "6", "7", "8", "9", "10" }));
 		Mockito.when(book.getPage(pageNumber++)).thenReturn(
 				Arrays.asList(new String[] { "11", "12" }));
+		Mockito.when(book.getPage(pageNumber++)).thenThrow(
+				new NoSuchElementException());
 
-		int newPageSize = 3;
-		Iterator<List<String>> i = new ReboundBookIterator<>(book, newPageSize);
+		Iterator<List<String>> i = new BookIterator<>(book);
 		{
 			List<String> page0 = i.next();
-			String expected = toString(1, 2, 3);
+			String expected = toString(1, 2, 3, 4, 5);
 			Assert.assertEquals(expected, toString(page0.toArray()));
 		}
 		{
 			List<String> page1 = i.next();
-			String expected = toString(4, 5, 6);
+			String expected = toString(6, 7, 8, 9, 10);
 			Assert.assertEquals(expected, toString(page1.toArray()));
 		}
 		{
 			List<String> page2 = i.next();
-			String expected = toString(7, 8, 9);
+			String expected = toString(11, 12);
 			Assert.assertEquals(expected, toString(page2.toArray()));
-		}
-		{
-			List<String> page3 = i.next();
-			String expected = toString(10, 11, 12);
-			Assert.assertEquals(expected, toString(page3.toArray()));
 		}
 	}
 
 	private static String toString(Object... o) {
 		return Joiner.on(", ").join(o);
 	}
+
 }
