@@ -15,6 +15,24 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.google.common.math.IntMath;
 
+/**
+ * <p>
+ * I mainly want to make sure the getPage method is correct and optimal. The
+ * Iterator is less important. I included the "testing" section at the bottom
+ * for your convenience and as a usage example.
+ * </p>
+ * 
+ * <p>
+ * I was mainly concerned with identifying any clever optimizations that could
+ * be done within getPage that I may have missed. I'm satisfied with the
+ * readability and memory consumption is a lesser concern
+ * </p>
+ * 
+ * @author Paul Bellora
+ * @see <a href=
+ *      "http://codereview.stackexchange.com/questions/12433/streaming-pages-of-a-different-size-than-a-caches-pages"
+ *      >Streaming pages of a different size than a cache's pages</a>
+ */
 public abstract class PagingAdapter<T> implements Iterable<List<T>> {
 
 	private final int callerPageSize;
@@ -199,5 +217,5 @@ public abstract class PagingAdapter<T> implements Iterable<List<T>> {
 			return store.length;
 		}
 	}
-	
+
 }

@@ -1,11 +1,13 @@
 package com.stackexchange.codereview;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 public class MainTest {
 
-	@org.junit.Test
-	public void testApp() {
+	@Test
+	public void foobar() {
 		assertTrue(true);
 	}
 
