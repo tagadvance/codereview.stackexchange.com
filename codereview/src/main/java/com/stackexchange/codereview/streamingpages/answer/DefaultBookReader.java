@@ -31,11 +31,11 @@ public class DefaultBookReader<E> implements BookReader<E> {
 			List<E> sublist = page.subList(position, page.size());
 			buffer.addAll(sublist);
 		}
-		int fromIndex = 0, toIndex = Math.min(length, buffer.size());
-		List<E> subList = buffer.subList(fromIndex, toIndex);
-		List<E> read = new ArrayList<>(subList);
-		for (int i = fromIndex; i < toIndex; i++) {
-			buffer.remove(0);
+		int toIndex = Math.min(length, buffer.size());
+		List<E> read = new ArrayList<>(length);
+		for (int i = 0; i < toIndex; i++) {
+			E e = buffer.remove(0);
+			read.add(e);
 		}
 		return read;
 	}
