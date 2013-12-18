@@ -35,31 +35,6 @@ public class ImmutableBookmark implements Bookmark {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + page;
-		result = prime * result + position;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ImmutableBookmark other = (ImmutableBookmark) obj;
-		if (page != other.page)
-			return false;
-		if (position != other.position)
-			return false;
-		return true;
-	}
-
-	@Override
 	public String toString() {
 		return ImmutableBookmark.class.getSimpleName() + " [page=" + page
 				+ ", position=" + position + "]";
