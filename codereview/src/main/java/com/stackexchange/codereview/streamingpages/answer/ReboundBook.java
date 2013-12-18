@@ -13,16 +13,17 @@ public class ReboundBook<E> implements Book<E> {
 	private final Book<E> book;
 	private final int newPageSize;
 	private final Reindex index;
-
+	private final int pageCount;
+	
 	public ReboundBook(Book<E> book, int newPageSize) {
 		super();
 		this.book = Preconditions.checkNotNull(book, "book must not be null");
 		this.newPageSize = newPageSize;
 		this.index = new DefaultReindex(this.book, this);
+		this.pageCount = calculatePageCount();
 	}
-
-	@Override
-	public int getPageCount() {
+	
+	public int calculatePageCount() {
 		int pageCount = book.getPageCount();
 		int pageSize = book.getPageSize();
 		int product = pageCount * pageSize;
@@ -31,6 +32,11 @@ public class ReboundBook<E> implements Book<E> {
 		BigDecimal divisor = BigDecimal.valueOf(newPageSize);
 		BigDecimal totalPageCount = total.divide(divisor, RoundingMode.CEILING);
 		return totalPageCount.intValue();
+	}
+	
+	@Override
+	public int getPageCount() {
+		return this.pageCount;
 	}
 
 	@Override
